@@ -10,37 +10,37 @@ import (
 )
 
 type BookResolver struct {
-	u *model.Book
+	book *model.Book
 }
 
 func (r *BookResolver) ID() graphql.ID {
-	return graphql.ID(r.u.ID)
+	return graphql.ID(r.book.ID)
 }
 
 func (r *BookResolver) Title() string {
-	return r.u.Title
+	return r.book.Title
 }
 
 func (r *BookResolver) NumPages() *int32 {
-	return &r.u.NumPages
+	return &r.book.NumPages
 }
 
 func (r *BookResolver) PubYear() *int32 {
-	return &r.u.PubYear
+	return &r.book.PubYear
 }
 
 func (r *BookResolver) Author(ctx context.Context) (*AuthorResolver, error) {
-	author, err := ctx.Value("authorService").(*service.AuthorService).FindByID(r.u.AuthorID)
+	author, err := ctx.Value("authorService").(*service.AuthorService).FindByID(r.book.AuthorID)
 	return &AuthorResolver{
 		author: author,
 	}, err
 }
 
 func (r *BookResolver) CreatedAt() (*graphql.Time, error) {
-	if r.u.CreatedAt == "" {
+	if r.book.CreatedAt == "" {
 		return nil, nil
 	}
 
-	t, err := time.Parse(time.RFC3339, r.u.CreatedAt)
+	t, err := time.Parse(time.RFC3339, r.book.CreatedAt)
 	return &graphql.Time{Time: t}, err
 }
