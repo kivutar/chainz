@@ -1,6 +1,9 @@
+scalar Time
+
 type Author {
     id: ID!
     name: String!
+    createdAt: Time
 }
 
 type Book {
@@ -9,6 +12,7 @@ type Book {
     pubYear: Int
     numPages: Int
     author: Author
+    createdAt: Time
 }
 
 schema {
@@ -19,7 +23,7 @@ schema {
 type Query {
     book(title: String!): Book
     author(id: ID!): Author
-    #users(first: Int,  after: String): UsersConnection!
+    books(): [Book]
 }
 
 type Mutation {

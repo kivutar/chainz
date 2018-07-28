@@ -7,5 +7,5 @@ type Book struct {
 	NumPages  int32  `db:"num_pages"`
 	PubYear   int32  `db:"pub_year"`
 	AuthorID  string `db:"author_id"`
-	CreatedAt string
+	CreatedAt string `db:"created_at"`
 }
