@@ -18,7 +18,7 @@ var (
 )
 
 func init() {
-	config := gcontext.LoadConfig("../")
+	config := gcontext.LoadConfig()
 	db, err := gcontext.OpenDB(config)
 	if err != nil {
 		log.Fatalf("Unable to connect to db: %s \n", err)
