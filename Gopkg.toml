@@ -1,6 +1,6 @@
 [metadata.heroku]
   root-package = "github.com/heroku/go-getting-started"
-  go-version = "1.10.2"
+  go-version = "1.10"
   install = [ "./..." ]
 
 required = ["github.com/jteeuwen/go-bindata"]
