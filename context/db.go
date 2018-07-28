@@ -1,7 +1,6 @@
 package context
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/jmoiron/sqlx"
@@ -12,13 +11,7 @@ import (
 // OpenDB creates the connection to the database
 func OpenDB(config *Config) (*sqlx.DB, error) {
 	log.Println("Database is connecting... ")
-	db, err := sqlx.Open("postgres", fmt.Sprintf(
-		"host=%s port=%s user=%s dbname=%s sslmode=disable",
-		config.DBHost,
-		config.DBPort,
-		config.DBUser,
-		config.DBName,
-	))
+	db, err := sqlx.Open("postgres", config.DBURL)
 
 	if err != nil {
 		return nil, err

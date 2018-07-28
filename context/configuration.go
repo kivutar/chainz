@@ -9,11 +9,7 @@ import (
 type Config struct {
 	AppName string
 
-	DBHost     string
-	DBPort     string
-	DBUser     string
-	DBPassword string
-	DBName     string
+	DBURL string
 
 	JWTSecret   string
 	JWTExpireIn time.Duration
@@ -26,11 +22,7 @@ type Config struct {
 func LoadConfig() *Config {
 	return &Config{
 		AppName:     "Chainz",
-		DBHost:      os.Getenv("DB_HOST"),
-		DBPort:      os.Getenv("DB_PORT"),
-		DBUser:      os.Getenv("DB_USER"),
-		DBPassword:  os.Getenv("DB_PASSWORD"),
-		DBName:      os.Getenv("DB_NAME"),
+		DBURL:       os.Getenv("DATABASE_URL"),
 		JWTSecret:   os.Getenv("JWT_SECRET"),
 		JWTExpireIn: 40000,
 		DebugMode:   true,
