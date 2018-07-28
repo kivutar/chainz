@@ -5,12 +5,10 @@ import (
 	"net/http"
 
 	"github.com/graph-gophers/graphql-go"
-	"github.com/kivutar/chainz/loader"
 )
 
 type GraphQL struct {
-	Schema  *graphql.Schema
-	Loaders loader.LoaderCollection
+	Schema *graphql.Schema
 }
 
 func (h *GraphQL) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -23,7 +21,7 @@ func (h *GraphQL) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	ctx := h.Loaders.Attach(r.Context())
+	ctx := r.Context()
 
 	response := h.Schema.Exec(ctx, params.Query, params.OperationName, params.Variables)
 	responseJSON, err := json.Marshal(response)

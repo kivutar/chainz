@@ -1,0 +1,16 @@
+CREATE TABLE authors
+(
+  id         VARCHAR(45) PRIMARY KEY ,
+  name       VARCHAR(255) NOT NULL UNIQUE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE books
+(
+  id    VARCHAR(25) PRIMARY KEY,
+  title VARCHAR(45) NOT NULL UNIQUE,
+  pub_year INT,
+  num_pages INT,
+  author_id VARCHAR(45) REFERENCES authors (id) ON UPDATE CASCADE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

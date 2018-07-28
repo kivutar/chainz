@@ -1,34 +1,14 @@
-type PageInfo {
-    startCursor: ID
-    endCursor: ID
-    hasNextPage: Boolean!
-}
-
-type Role {
+type Author {
     id: ID!
-    name: String
+    name: String!
 }
 
-scalar Time
-
-type User {
+type Book {
     id: ID!
-    email: String
-    password: String
-    ipAddress: String
-    createdAt: Time
-    roles: [Role]
-}
-
-type UsersConnection {
-    totalCount: Int!
-    edges: [UsersEdge]
-    pageInfo: PageInfo!
-}
-
-type UsersEdge {
-    cursor: ID!
-    node: User
+    title: String!
+    pubYear: Int
+    numPages: Int
+    author: Author
 }
 
 schema {
@@ -37,10 +17,12 @@ schema {
 }
 
 type Query {
-    user(email: String!): User
-    users(first: Int,  after: String): UsersConnection!
+    book(title: String!): Book
+    author(id: ID!): Author
+    #users(first: Int,  after: String): UsersConnection!
 }
 
 type Mutation {
-    createUser(email: String!, password: String!): User
+    createAuthor(name: String!): Author
+    createBook(title: String!, pubYear: Int, numPages: Int, authorID: ID): Book
 }

@@ -24,9 +24,9 @@ func init() {
 		log.Fatalf("Unable to connect to db: %s \n", err)
 	}
 	log := service.NewLogger(config)
-	roleService := service.NewRoleService(db, log)
-	userService := service.NewUserService(db, roleService, log)
-	ctx = context.WithValue(context.Background(), "userService", userService)
+	authorService := service.NewAuthorService(db, log)
+	bookService := service.NewBookService(db, authorService, log)
+	ctx = context.WithValue(context.Background(), "bookService", bookService)
 }
 
 func TestBasic(t *testing.T) {
@@ -36,19 +36,17 @@ func TestBasic(t *testing.T) {
 			Schema:  rootSchema,
 			Query: `
 				{
-					user(email:"test@1.com") {
+					book(title:"The Holy Bible") {
 						id
-						email
-						password
+						numPages
 					}
 				}
 			`,
 			ExpectedResult: `
 				{
-					"user": {
+					"book": {
 					  "id": "1",
-					  "email": "test@1.com",
-					  "password": "********"
+					  "numPages": 1000
 					}
 				}
 			`,
