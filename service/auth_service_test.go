@@ -1,9 +1,10 @@
 package service
 
 import (
-	gcontext "github.com/OscarYuen/go-graphql-starter/context"
-	"github.com/OscarYuen/go-graphql-starter/model"
 	"testing"
+
+	gcontext "github.com/kivutar/chainz/context"
+	"github.com/kivutar/chainz/model"
 )
 
 var (
@@ -29,5 +30,4 @@ func TestSignJWT(t *testing.T) {
 	if *tokenString == "" || tokenString == nil {
 		t.Errorf("Invalid JWT")
 	}
-
 }

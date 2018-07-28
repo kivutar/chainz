@@ -1,11 +1,11 @@
 package context
 
 import (
-	"github.com/spf13/viper"
-	"log"
+	"os"
 	"time"
 )
 
+// Config is a struct that stores the configuration of the app
 type Config struct {
 	AppName string
 
@@ -22,28 +22,18 @@ type Config struct {
 	LogFormat string
 }
 
-func LoadConfig(path string) *Config {
-	config := viper.New()
-	config.SetConfigName("Config")
-	config.AddConfigPath(".")
-	err := config.ReadInConfig()
-	if err != nil {
-		log.Fatalf("Fatal error context file: %s \n", err)
-	}
-
+// LoadConfig loads the configuration from environment variable
+func LoadConfig() *Config {
 	return &Config{
-		AppName: config.Get("app-name").(string),
-
-		DBHost:     config.Get("db.host").(string),
-		DBPort:     config.Get("db.port").(string),
-		DBUser:     config.Get("db.user").(string),
-		DBPassword: config.Get("db.password").(string),
-		DBName:     config.Get("db.dbname").(string),
-
-		JWTSecret:   config.Get("auth.jwt-secret").(string),
-		JWTExpireIn: config.GetDuration("auth.jwt-expire-in"),
-
-		DebugMode: config.Get("log.debug-mode").(bool),
-		LogFormat: config.Get("log.log-format").(string),
+		AppName:     "Chainz",
+		DBHost:      os.Getenv("DB_HOST"),
+		DBPort:      os.Getenv("DB_PORT"),
+		DBUser:      os.Getenv("DB_USER"),
+		DBPassword:  os.Getenv("DB_PASSWORD"),
+		DBName:      os.Getenv("DB_NAME"),
+		JWTSecret:   os.Getenv("JWT_SECRET"),
+		JWTExpireIn: 40000,
+		DebugMode:   true,
+		LogFormat:   "%{color}%{time:2006/01/02 15:04:05 -07:00 MST} [%{level:.6s}] %{shortfile} : %{color:reset}%{message}",
 	}
 }

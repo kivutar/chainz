@@ -2,11 +2,12 @@ package loader
 
 import (
 	"fmt"
-	"github.com/OscarYuen/go-graphql-starter/model"
-	"github.com/OscarYuen/go-graphql-starter/service"
+	"sync"
+
+	"github.com/kivutar/chainz/model"
+	"github.com/kivutar/chainz/service"
 	"golang.org/x/net/context"
 	"gopkg.in/nicksrandall/dataloader.v5"
-	"sync"
 )
 
 // FilmLoader contains the client required to load film resources.

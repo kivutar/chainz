@@ -2,9 +2,10 @@ package handler
 
 import (
 	"encoding/json"
-	"github.com/OscarYuen/go-graphql-starter/loader"
-	"github.com/graph-gophers/graphql-go"
 	"net/http"
+
+	"github.com/graph-gophers/graphql-go"
+	"github.com/kivutar/chainz/loader"
 )
 
 type GraphQL struct {

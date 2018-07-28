@@ -1,8 +1,8 @@
 package resolver
 
 import (
-	"github.com/OscarYuen/go-graphql-starter/model"
 	"github.com/graph-gophers/graphql-go"
+	"github.com/kivutar/chainz/model"
 )
 
 type usersEdgeResolver struct {

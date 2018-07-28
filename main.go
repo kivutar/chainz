@@ -1,26 +1,28 @@
 package main
 
 import (
-	gcontext "github.com/OscarYuen/go-graphql-starter/context"
-	h "github.com/OscarYuen/go-graphql-starter/handler"
-	"github.com/OscarYuen/go-graphql-starter/resolver"
-	"github.com/OscarYuen/go-graphql-starter/schema"
-	"github.com/OscarYuen/go-graphql-starter/service"
 	"log"
 	"net/http"
 
-	"github.com/OscarYuen/go-graphql-starter/loader"
+	gcontext "github.com/kivutar/chainz/context"
+	h "github.com/kivutar/chainz/handler"
+	"github.com/kivutar/chainz/resolver"
+	"github.com/kivutar/chainz/schema"
+	"github.com/kivutar/chainz/service"
+
 	graphql "github.com/graph-gophers/graphql-go"
+	"github.com/kivutar/chainz/loader"
 	"golang.org/x/net/context"
 )
 
 func main() {
-	config := gcontext.LoadConfig(".")
+	config := gcontext.LoadConfig()
 
 	db, err := gcontext.OpenDB(config)
 	if err != nil {
 		log.Fatalf("Unable to connect to db: %s \n", err)
 	}
+
 	ctx := context.Background()
 	log := service.NewLogger(config)
 	roleService := service.NewRoleService(db, log)

@@ -1,9 +1,10 @@
 package service
 
 import (
-	"github.com/OscarYuen/go-graphql-starter/context"
-	"github.com/op/go-logging"
 	"os"
+
+	"github.com/kivutar/chainz/context"
+	"github.com/op/go-logging"
 )
 
 func NewLogger(config *context.Config) *logging.Logger {

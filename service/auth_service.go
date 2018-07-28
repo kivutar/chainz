@@ -3,11 +3,12 @@ package service
 import (
 	"encoding/base64"
 	"fmt"
-	"github.com/OscarYuen/go-graphql-starter/context"
-	"github.com/OscarYuen/go-graphql-starter/model"
-	jwt "github.com/dgrijalva/jwt-go"
-	"github.com/op/go-logging"
 	"time"
+
+	jwt "github.com/dgrijalva/jwt-go"
+	"github.com/kivutar/chainz/context"
+	"github.com/kivutar/chainz/model"
+	"github.com/op/go-logging"
 )
 
 type AuthService struct {

@@ -1,7 +1,9 @@
 # IDE
 .idea/
+.vscode/
 /schema/bindata.go
 /vendor
 
 *.exe
+chainz
 bindata.go
