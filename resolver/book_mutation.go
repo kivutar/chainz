@@ -15,10 +15,16 @@ func (r *Resolver) CreateBook(ctx context.Context, args *struct {
 	AuthorID *string
 }) (*BookResolver, error) {
 	book := &model.Book{
-		Title:    args.Title,
-		PubYear:  *args.PubYear,
-		NumPages: *args.NumPages,
-		AuthorID: *args.AuthorID,
+		Title: args.Title,
+	}
+	if args.PubYear != nil {
+		book.PubYear = *args.PubYear
+	}
+	if args.NumPages != nil {
+		book.NumPages = *args.NumPages
+	}
+	if args.AuthorID != nil {
+		book.AuthorID = *args.AuthorID
 	}
 
 	book, err := ctx.Value("bookService").(*service.BookService).CreateBook(book)
