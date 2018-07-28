@@ -50,8 +50,8 @@ func (u *UserService) FindByEmail(email string) (*model.User, error) {
 }
 
 func (u *UserService) CreateUser(user *model.User) (*model.User, error) {
-	userId := xid.New()
-	user.ID = userId.String()
+	userID := xid.New()
+	user.ID = userID.String()
 	userSQL := `INSERT INTO users (id, email, password, ip_address) VALUES (:id, :email, :password, :ip_address)`
 	user.HashedPassword()
 	_, err := u.db.NamedExec(userSQL, user)

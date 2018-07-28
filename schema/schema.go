@@ -1,21 +1,9 @@
-//go:generate go-bindata -ignore=\.go -pkg=schema -o=bindata.go ./...
+// Package schema stores our graphql schema in a string using bindata to compile it in the binary
 package schema
 
-import (
-	"bytes"
-)
+//go:generate go-bindata -ignore=\.go -pkg=schema -o=bindata.go ./...
 
+// GetRootSchema returns the schema.graphql string stored in bindata.go
 func GetRootSchema() string {
-	buf := bytes.Buffer{}
-	for _, name := range AssetNames() {
-		b := MustAsset(name)
-		buf.Write(b)
-
-		// Add a newline if the file does not end in a newline.
-		if len(b) > 0 && b[len(b)-1] != '\n' {
-			buf.WriteByte('\n')
-		}
-	}
-
-	return buf.String()
+	return string(MustAsset("schema.graphql")[:])
 }

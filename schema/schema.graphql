@@ -1,11 +1,46 @@
+type PageInfo {
+    startCursor: ID
+    endCursor: ID
+    hasNextPage: Boolean!
+}
+
+type Role {
+    id: ID!
+    name: String
+}
+
+scalar Time
+
+type User {
+    id: ID!
+    email: String
+    password: String
+    ipAddress: String
+    createdAt: Time
+    roles: [Role]
+}
+
+type UsersConnection {
+    totalCount: Int!
+    edges: [UsersEdge]
+    pageInfo: PageInfo!
+}
+
+type UsersEdge {
+    cursor: ID!
+    node: User
+}
+
 schema {
     query: Query
     mutation: Mutation
 }
+
 type Query {
     user(email: String!): User
     users(first: Int,  after: String): UsersConnection!
 }
+
 type Mutation {
     createUser(email: String!, password: String!): User
 }
