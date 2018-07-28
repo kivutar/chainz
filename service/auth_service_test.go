@@ -12,7 +12,7 @@ var (
 )
 
 func init() {
-	config := gcontext.LoadConfig("../")
+	config := gcontext.LoadConfig()
 	log := NewLogger(config)
 	authService = NewAuthService(config, log)
 }
