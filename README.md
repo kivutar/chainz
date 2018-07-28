@@ -1,5 +1,5 @@
     go get -u github.com/jteeuwen/go-bindata/...
     go generate ./schema
     go build
-    DB_HOST=localhost DB_PORT=5432 DB_USER=kivutar DB_PASSWORD='' DB_NAME=gographqlstarter \
+    DATABASE_URL=postgres://kivutar:@localhost:5432/gographqlstarter?sslmode=disable \
     JWT_SECRET=1234 ./chainz
