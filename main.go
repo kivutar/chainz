@@ -35,7 +35,7 @@ func main() {
 
 	graphqlSchema := graphql.MustParseSchema(schema.GetRootSchema(), &resolver.Resolver{})
 
-	loggerHandler := &h.LoggerHandler{config.DebugMode}
+	loggerHandler := &h.LoggerHandler{DebugMode: config.DebugMode}
 	http.Handle("/query", h.AddContext(ctx, loggerHandler.Logging(&h.GraphQL{Schema: graphqlSchema})))
 
 	http.Handle("/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

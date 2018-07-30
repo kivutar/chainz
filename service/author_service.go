@@ -15,15 +15,15 @@ func NewAuthorService(db *gorm.DB, log *logging.Logger) *AuthorService {
 	return &AuthorService{db: db, log: log}
 }
 
-func (s *AuthorService) CreateAuthor(author *model.Author) (*model.Author, error) {
-	err := s.db.Create(author).Error
+func (s *AuthorService) CreateAuthor(author model.Author) (model.Author, error) {
+	err := s.db.Create(&author).Error
 	return author, err
 }
 
-func (s *AuthorService) FindByID(ID string) (*model.Author, error) {
+func (s *AuthorService) FindByID(ID string) (model.Author, error) {
 	author := model.Author{}
 	err := s.db.First(&author, "id = ?", ID).Error
-	return &author, err
+	return author, err
 }
 
 func (s *AuthorService) FindByBookId(bookID string) (string, error) {

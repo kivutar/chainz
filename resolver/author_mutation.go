@@ -11,7 +11,7 @@ import (
 func (r *Resolver) CreateAuthor(ctx context.Context, args *struct {
 	Name string
 }) (*AuthorResolver, error) {
-	author := &model.Author{
+	author := model.Author{
 		Name: args.Name,
 	}
 
@@ -20,6 +20,6 @@ func (r *Resolver) CreateAuthor(ctx context.Context, args *struct {
 		ctx.Value("log").(*logging.Logger).Errorf("Graphql error : %v", err)
 		return nil, err
 	}
-	ctx.Value("log").(*logging.Logger).Debugf("Created author : %v", *author)
-	return &AuthorResolver{author}, nil
+	ctx.Value("log").(*logging.Logger).Debugf("Created author : %v", author)
+	return &AuthorResolver{&author}, nil
 }

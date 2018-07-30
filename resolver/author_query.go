@@ -16,6 +16,6 @@ func (r *Resolver) Author(ctx context.Context, args struct {
 		return nil, err
 	}
 
-	ctx.Value("log").(*logging.Logger).Debugf("Retrieved author by author_id[%s] : %v", author.ID, *author)
-	return &AuthorResolver{author}, nil
+	ctx.Value("log").(*logging.Logger).Debugf("Retrieved author by author_id[%s] : %v", author.ID, author)
+	return &AuthorResolver{&author}, nil
 }

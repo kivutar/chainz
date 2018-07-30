@@ -36,7 +36,7 @@ func (r *BookResolver) Author(ctx context.Context) (*AuthorResolver, error) {
 	}
 
 	return &AuthorResolver{
-		author: author,
+		author: &author,
 	}, nil
 }
 

@@ -14,7 +14,7 @@ func (r *Resolver) CreateBook(ctx context.Context, args *struct {
 	NumPages *int32
 	AuthorID *string
 }) (*BookResolver, error) {
-	book := &model.Book{
+	book := model.Book{
 		Title: args.Title,
 	}
 	if args.PubYear != nil {
@@ -32,6 +32,6 @@ func (r *Resolver) CreateBook(ctx context.Context, args *struct {
 		ctx.Value("log").(*logging.Logger).Errorf("Graphql error : %v", err)
 		return nil, err
 	}
-	ctx.Value("log").(*logging.Logger).Debugf("Created book : %v", *book)
-	return &BookResolver{book}, nil
+	ctx.Value("log").(*logging.Logger).Debugf("Created book : %v", book)
+	return &BookResolver{&book}, nil
 }
