@@ -28,10 +28,15 @@ func main() {
 	authorService := service.NewAuthorService(db, log)
 	bookService := service.NewBookService(db, authorService, log)
 
+	services := &service.Container{
+		BookServer: bookService,
+	}
+
 	ctx = context.WithValue(ctx, "config", config)
 	ctx = context.WithValue(ctx, "log", log)
 	ctx = context.WithValue(ctx, "authorService", authorService)
 	ctx = context.WithValue(ctx, "bookService", bookService)
+	ctx = context.WithValue(ctx, "services", services)
 
 	graphqlSchema := graphql.MustParseSchema(schema.GetRootSchema(), &resolver.Resolver{})
 

@@ -12,6 +12,19 @@ type BookService struct {
 	log           *logging.Logger
 }
 
+type BookFinder interface {
+	FindByTitle(title string) (model.Book, error)
+}
+
+type BookLister interface {
+	List() ([]model.Book, error)
+}
+
+type BookServer interface {
+	BookFinder
+	BookLister
+}
+
 func NewBookService(db *gorm.DB, authorService *AuthorService, log *logging.Logger) *BookService {
 	return &BookService{db: db, authorService: authorService, log: log}
 }
