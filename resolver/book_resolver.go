@@ -1,11 +1,10 @@
 package resolver
 
 import (
-	"time"
-
 	graphql "github.com/graph-gophers/graphql-go"
 	"github.com/kivutar/chainz/model"
 	"github.com/kivutar/chainz/service"
+	logging "github.com/op/go-logging"
 	"golang.org/x/net/context"
 )
 
@@ -31,16 +30,16 @@ func (r *BookResolver) PubYear() *int32 {
 
 func (r *BookResolver) Author(ctx context.Context) (*AuthorResolver, error) {
 	author, err := ctx.Value("authorService").(*service.AuthorService).FindByID(r.book.AuthorID)
-	return &AuthorResolver{
-		author: author,
-	}, err
-}
-
-func (r *BookResolver) CreatedAt() (*graphql.Time, error) {
-	if r.book.CreatedAt == "" {
-		return nil, nil
+	if err != nil {
+		ctx.Value("log").(*logging.Logger).Errorf("Graphql error : %v", err)
+		return nil, err
 	}
 
-	t, err := time.Parse(time.RFC3339, r.book.CreatedAt)
-	return &graphql.Time{Time: t}, err
+	return &AuthorResolver{
+		author: author,
+	}, nil
+}
+
+func (r *BookResolver) CreatedAt() *graphql.Time {
+	return &graphql.Time{Time: r.book.CreatedAt}
 }

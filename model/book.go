@@ -1,11 +1,23 @@
 package model
 
+import (
+	"time"
+
+	"github.com/jinzhu/gorm"
+	"github.com/rs/xid"
+)
+
 // Book represents a published book
 type Book struct {
-	ID        string
-	Title     string
-	NumPages  int32  `db:"num_pages"`
-	PubYear   int32  `db:"pub_year"`
-	AuthorID  string `db:"author_id"`
-	CreatedAt string `db:"created_at"`
+	ID        string `gorm:"primary_key"`
+	Title     string `gorm:"not null;unique"`
+	NumPages  int32
+	PubYear   int32
+	AuthorID  string
+	CreatedAt time.Time
+}
+
+func (b *Book) BeforeCreate(scope *gorm.Scope) error {
+	scope.SetColumn("ID", xid.New().String())
+	return nil
 }

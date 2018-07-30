@@ -15,7 +15,8 @@ func (r *Resolver) Book(ctx context.Context, args struct {
 		ctx.Value("log").(*logging.Logger).Errorf("Graphql error : %v", err)
 		return nil, err
 	}
-	ctx.Value("log").(*logging.Logger).Debugf("Retrieved book by book_id[%s] : %v", book.ID, *book)
+
+	ctx.Value("log").(*logging.Logger).Debugf("Retrieved book by title[%s] : %v", args.Title, *book)
 	return &BookResolver{book}, nil
 }
 
@@ -26,7 +27,8 @@ func (r *Resolver) Books(ctx context.Context) (*[]*BookResolver, error) {
 		ctx.Value("log").(*logging.Logger).Errorf("Graphql error : %v", err)
 		return nil, err
 	}
-	brs := make([]*BookResolver, 0)
+
+	var brs []*BookResolver
 	for _, book := range books {
 		brs = append(brs, &BookResolver{
 			book: book,

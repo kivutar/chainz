@@ -21,6 +21,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("Unable to connect to db: %s \n", err)
 	}
+	defer db.Close()
 
 	ctx := context.Background()
 	log := service.NewLogger(config)
