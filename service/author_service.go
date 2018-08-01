@@ -12,7 +12,7 @@ type AuthorService struct {
 type AuthorServer interface {
 	CreateAuthor(author model.Author) (model.Author, error)
 	FindByID(ID string) (model.Author, error)
-	FindByBookId(bookID string) (string, error)
+	FindByBookID(bookID string) (string, error)
 }
 
 func NewAuthorService(db *gorm.DB) *AuthorService {
@@ -30,7 +30,7 @@ func (s *AuthorService) FindByID(ID string) (model.Author, error) {
 	return author, err
 }
 
-func (s *AuthorService) FindByBookId(bookID string) (string, error) {
+func (s *AuthorService) FindByBookID(bookID string) (string, error) {
 	var author model.Author
 	err := s.db.Raw(`SELECT a.*
 	FROM authors a, books b
