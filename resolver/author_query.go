@@ -10,12 +10,15 @@ import (
 func (r *Resolver) Author(ctx context.Context, args struct {
 	ID string
 }) (*AuthorResolver, error) {
-	author, err := ctx.Value("services").(*service.Container).AuthorServer.FindByID(args.ID)
+	authorService := ctx.Value("services").(*service.Container).AuthorServer
+	logger := ctx.Value("logger").(*logging.Logger)
+
+	author, err := authorService.FindByID(args.ID)
 	if err != nil {
-		ctx.Value("log").(*logging.Logger).Errorf("Graphql error : %v", err)
+		logger.Errorf("Graphql error : %v", err)
 		return nil, err
 	}
 
-	ctx.Value("log").(*logging.Logger).Debugf("Retrieved author by author_id[%s] : %v", author.ID, author)
+	logger.Debugf("Retrieved author by author_id[%s] : %v", author.ID, author)
 	return &AuthorResolver{&author}, nil
 }

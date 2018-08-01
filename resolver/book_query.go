@@ -10,21 +10,26 @@ import (
 func (r *Resolver) Book(ctx context.Context, args struct {
 	Title string
 }) (*BookResolver, error) {
-	book, err := ctx.Value("services").(*service.Container).BookServer.FindByTitle(args.Title)
+	bookService := ctx.Value("services").(*service.Container).BookServer
+	logger := ctx.Value("logger").(*logging.Logger)
+
+	book, err := bookService.FindByTitle(args.Title)
 	if err != nil {
-		ctx.Value("log").(*logging.Logger).Errorf("Graphql error : %v", err)
+		logger.Errorf("Graphql error : %v", err)
 		return nil, err
 	}
 
-	ctx.Value("log").(*logging.Logger).Debugf("Retrieved book by title[%s] : %v", args.Title, book)
+	logger.Debugf("Retrieved book by title[%s] : %v", args.Title, book)
 	return &BookResolver{&book}, nil
 }
 
 // Books resolves a books graphql query
 func (r *Resolver) Books(ctx context.Context) (*[]*BookResolver, error) {
-	books, err := ctx.Value("services").(*service.Container).BookServer.List()
+	bookService := ctx.Value("services").(*service.Container).BookServer
+
+	books, err := bookService.List()
 	if err != nil {
-		//ctx.Value("log").(*logging.Logger).Errorf("Graphql error : %v", err)
+		//ctx.Value("logger").(*logging.Logger).Errorf("Graphql error : %v", err)
 		return nil, err
 	}
 

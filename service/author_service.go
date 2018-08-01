@@ -3,12 +3,10 @@ package service
 import (
 	"github.com/jinzhu/gorm"
 	"github.com/kivutar/chainz/model"
-	"github.com/op/go-logging"
 )
 
 type AuthorService struct {
-	db  *gorm.DB
-	log *logging.Logger
+	db *gorm.DB
 }
 
 type AuthorServer interface {
@@ -17,8 +15,8 @@ type AuthorServer interface {
 	FindByBookId(bookID string) (string, error)
 }
 
-func NewAuthorService(db *gorm.DB, log *logging.Logger) *AuthorService {
-	return &AuthorService{db: db, log: log}
+func NewAuthorService(db *gorm.DB) *AuthorService {
+	return &AuthorService{db: db}
 }
 
 func (s *AuthorService) CreateAuthor(author model.Author) (model.Author, error) {

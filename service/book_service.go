@@ -3,13 +3,10 @@ package service
 import (
 	"github.com/jinzhu/gorm"
 	"github.com/kivutar/chainz/model"
-	"github.com/op/go-logging"
 )
 
 type BookService struct {
-	db            *gorm.DB
-	authorService *AuthorService
-	log           *logging.Logger
+	db *gorm.DB
 }
 
 type BookServer interface {
@@ -18,8 +15,8 @@ type BookServer interface {
 	List() ([]model.Book, error)
 }
 
-func NewBookService(db *gorm.DB, authorService *AuthorService, log *logging.Logger) *BookService {
-	return &BookService{db: db, authorService: authorService, log: log}
+func NewBookService(db *gorm.DB) *BookService {
+	return &BookService{db: db}
 }
 
 func (s *BookService) CreateBook(book model.Book) (model.Book, error) {

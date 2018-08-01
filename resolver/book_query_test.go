@@ -39,14 +39,14 @@ func (bfm BookServerMocker) List() ([]model.Book, error) {
 }
 
 func TestBookQuery(t *testing.T) {
-	log := service.NewLogger(gcontext.LoadConfig())
+	logger := service.NewLogger(gcontext.LoadConfig())
 
 	services := &service.Container{
 		BookServer: BookServerMocker{},
 	}
 
 	ctx := context.Background()
-	ctx = context.WithValue(ctx, "log", log)
+	ctx = context.WithValue(ctx, "logger", logger)
 	ctx = context.WithValue(ctx, "services", services)
 
 	graphqlSchema := graphql.MustParseSchema(schema.GetRootSchema(), &Resolver{})
