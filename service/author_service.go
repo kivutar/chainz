@@ -11,6 +11,12 @@ type AuthorService struct {
 	log *logging.Logger
 }
 
+type AuthorServer interface {
+	CreateAuthor(author model.Author) (model.Author, error)
+	FindByID(ID string) (model.Author, error)
+	FindByBookId(bookID string) (string, error)
+}
+
 func NewAuthorService(db *gorm.DB, log *logging.Logger) *AuthorService {
 	return &AuthorService{db: db, log: log}
 }

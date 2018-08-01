@@ -17,36 +17,32 @@ var (
 	ctx           context.Context
 )
 
+var book = model.Book{
+	Title:    "Voyage au bout de la nuit",
+	NumPages: 623,
+	PubYear:  1930,
+	AuthorID: "1234",
+}
+
 type BookServerMocker struct{}
 
+func (bfm BookServerMocker) CreateBook(book model.Book) (model.Book, error) {
+	return book, nil
+}
+
 func (bfm BookServerMocker) FindByTitle(title string) (model.Book, error) {
-	return model.Book{
-		Title:    "Voyage au bout de la nuit",
-		NumPages: 623,
-		PubYear:  1930,
-		AuthorID: "1234",
-	}, nil
+	return book, nil
 }
 
 func (bfm BookServerMocker) List() ([]model.Book, error) {
-	return []model.Book{
-		model.Book{
-			Title:    "Voyage au bout de la nuit",
-			NumPages: 623,
-			PubYear:  1930,
-			AuthorID: "1234",
-		},
-	}, nil
+	return []model.Book{book}, nil
 }
 
 func TestBookQuery(t *testing.T) {
-	config := gcontext.LoadConfig()
-
-	log := service.NewLogger(config)
-	bookService := BookServerMocker{}
+	log := service.NewLogger(gcontext.LoadConfig())
 
 	services := &service.Container{
-		BookServer: bookService,
+		BookServer: BookServerMocker{},
 	}
 
 	ctx := context.Background()

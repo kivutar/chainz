@@ -15,7 +15,7 @@ func (r *Resolver) CreateAuthor(ctx context.Context, args *struct {
 		Name: args.Name,
 	}
 
-	author, err := ctx.Value("authorService").(*service.AuthorService).CreateAuthor(author)
+	author, err := ctx.Value("services").(*service.Container).AuthorServer.CreateAuthor(author)
 	if err != nil {
 		ctx.Value("log").(*logging.Logger).Errorf("Graphql error : %v", err)
 		return nil, err

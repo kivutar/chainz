@@ -27,7 +27,7 @@ func (r *Resolver) CreateBook(ctx context.Context, args *struct {
 		book.AuthorID = *args.AuthorID
 	}
 
-	book, err := ctx.Value("bookService").(*service.BookService).CreateBook(book)
+	book, err := ctx.Value("services").(*service.Container).BookServer.CreateBook(book)
 	if err != nil {
 		ctx.Value("log").(*logging.Logger).Errorf("Graphql error : %v", err)
 		return nil, err

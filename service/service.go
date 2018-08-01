@@ -1,5 +1,6 @@
 package service
 
 type Container struct {
-	BookServer BookServer
+	BookServer   BookServer
+	AuthorServer AuthorServer
 }

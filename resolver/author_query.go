@@ -10,7 +10,7 @@ import (
 func (r *Resolver) Author(ctx context.Context, args struct {
 	ID string
 }) (*AuthorResolver, error) {
-	author, err := ctx.Value("authorService").(*service.AuthorService).FindByID(args.ID)
+	author, err := ctx.Value("services").(*service.Container).AuthorServer.FindByID(args.ID)
 	if err != nil {
 		ctx.Value("log").(*logging.Logger).Errorf("Graphql error : %v", err)
 		return nil, err

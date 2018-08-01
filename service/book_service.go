@@ -12,31 +12,24 @@ type BookService struct {
 	log           *logging.Logger
 }
 
-type BookFinder interface {
-	FindByTitle(title string) (model.Book, error)
-}
-
-type BookLister interface {
-	List() ([]model.Book, error)
-}
-
 type BookServer interface {
-	BookFinder
-	BookLister
+	CreateBook(book model.Book) (model.Book, error)
+	FindByTitle(title string) (model.Book, error)
+	List() ([]model.Book, error)
 }
 
 func NewBookService(db *gorm.DB, authorService *AuthorService, log *logging.Logger) *BookService {
 	return &BookService{db: db, authorService: authorService, log: log}
 }
 
-func (s *BookService) FindByTitle(title string) (model.Book, error) {
-	book := model.Book{}
-	err := s.db.First(&book, "title = ?", title).Error
+func (s *BookService) CreateBook(book model.Book) (model.Book, error) {
+	err := s.db.Create(&book).Error
 	return book, err
 }
 
-func (s *BookService) CreateBook(book model.Book) (model.Book, error) {
-	err := s.db.Create(&book).Error
+func (s *BookService) FindByTitle(title string) (model.Book, error) {
+	book := model.Book{}
+	err := s.db.First(&book, "title = ?", title).Error
 	return book, err
 }
 
