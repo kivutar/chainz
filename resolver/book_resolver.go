@@ -29,7 +29,7 @@ func (r *BookResolver) PubYear() *int32 {
 }
 
 func (r *BookResolver) Author(ctx context.Context) (*AuthorResolver, error) {
-	authorService := ctx.Value("authorService").(*service.AuthorService)
+	authorService := ctx.Value("services").(*service.Container).AuthorServer
 	logger := ctx.Value("logger").(*logging.Logger)
 
 	author, err := authorService.FindByID(r.book.AuthorID)
