@@ -31,9 +31,9 @@ func (s *AuthorService) FindByID(ID string) (model.Author, error) {
 }
 
 func (s *AuthorService) FindByBookId(bookID string) (string, error) {
-	var author *model.Author
+	var author model.Author
 	err := s.db.Raw(`SELECT a.*
 	FROM authors a, books b
-	WHERE b.author_id = a.id AND b.id = ?`, bookID).First(author).Error
+	WHERE b.author_id = a.id AND b.id = ?`, bookID).First(&author).Error
 	return author.ID, err
 }

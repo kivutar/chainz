@@ -2,20 +2,13 @@ package context
 
 import (
 	"os"
-	"time"
 )
 
 // Config is a struct that stores the configuration of the app
 type Config struct {
-	AppName string
-
-	DBURL string
-
-	Port string
-
-	JWTSecret   string
-	JWTExpireIn time.Duration
-
+	AppName   string
+	DBURL     string
+	Port      string
 	DebugMode bool
 	LogFormat string
 }
