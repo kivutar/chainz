@@ -3,16 +3,20 @@ package service
 import (
 	"github.com/jinzhu/gorm"
 	"github.com/kivutar/chainz/model"
-	"github.com/op/go-logging"
 )
 
 type AuthorService struct {
-	db  *gorm.DB
-	log *logging.Logger
+	db *gorm.DB
 }
 
-func NewAuthorService(db *gorm.DB, log *logging.Logger) *AuthorService {
-	return &AuthorService{db: db, log: log}
+type AuthorServer interface {
+	CreateAuthor(author model.Author) (model.Author, error)
+	FindByID(ID string) (model.Author, error)
+	FindByBookID(bookID string) (string, error)
+}
+
+func NewAuthorService(db *gorm.DB) *AuthorService {
+	return &AuthorService{db: db}
 }
 
 func (s *AuthorService) CreateAuthor(author model.Author) (model.Author, error) {
@@ -26,10 +30,10 @@ func (s *AuthorService) FindByID(ID string) (model.Author, error) {
 	return author, err
 }
 
-func (s *AuthorService) FindByBookId(bookID string) (string, error) {
-	var author *model.Author
+func (s *AuthorService) FindByBookID(bookID string) (string, error) {
+	var author model.Author
 	err := s.db.Raw(`SELECT a.*
 	FROM authors a, books b
-	WHERE b.author_id = a.id AND b.id = ?`, bookID).First(author).Error
+	WHERE b.author_id = a.id AND b.id = ?`, bookID).First(&author).Error
 	return author.ID, err
 }

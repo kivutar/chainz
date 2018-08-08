@@ -24,14 +24,18 @@ func main() {
 	defer db.Close()
 
 	ctx := context.Background()
-	log := service.NewLogger(config)
-	authorService := service.NewAuthorService(db, log)
-	bookService := service.NewBookService(db, authorService, log)
+	logger := service.NewLogger(config)
+	authorService := service.NewAuthorService(db)
+	bookService := service.NewBookService(db)
+
+	services := &service.Container{
+		BookServer:   bookService,
+		AuthorServer: authorService,
+	}
 
 	ctx = context.WithValue(ctx, "config", config)
-	ctx = context.WithValue(ctx, "log", log)
-	ctx = context.WithValue(ctx, "authorService", authorService)
-	ctx = context.WithValue(ctx, "bookService", bookService)
+	ctx = context.WithValue(ctx, "logger", logger)
+	ctx = context.WithValue(ctx, "services", services)
 
 	graphqlSchema := graphql.MustParseSchema(schema.GetRootSchema(), &resolver.Resolver{})
 

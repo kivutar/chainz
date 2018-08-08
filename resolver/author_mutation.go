@@ -11,15 +11,18 @@ import (
 func (r *Resolver) CreateAuthor(ctx context.Context, args *struct {
 	Name string
 }) (*AuthorResolver, error) {
+	authorService := ctx.Value("services").(*service.Container).AuthorServer
+	logger := ctx.Value("logger").(*logging.Logger)
+
 	author := model.Author{
 		Name: args.Name,
 	}
 
-	author, err := ctx.Value("authorService").(*service.AuthorService).CreateAuthor(author)
+	author, err := authorService.CreateAuthor(author)
 	if err != nil {
-		ctx.Value("log").(*logging.Logger).Errorf("Graphql error : %v", err)
+		logger.Errorf("Graphql error : %v", err)
 		return nil, err
 	}
-	ctx.Value("log").(*logging.Logger).Debugf("Created author : %v", author)
+	logger.Debugf("Created author : %v", author)
 	return &AuthorResolver{&author}, nil
 }

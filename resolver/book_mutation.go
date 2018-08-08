@@ -14,6 +14,9 @@ func (r *Resolver) CreateBook(ctx context.Context, args *struct {
 	NumPages *int32
 	AuthorID *string
 }) (*BookResolver, error) {
+	bookService := ctx.Value("services").(*service.Container).BookServer
+	logger := ctx.Value("logger").(*logging.Logger)
+
 	book := model.Book{
 		Title: args.Title,
 	}
@@ -27,11 +30,11 @@ func (r *Resolver) CreateBook(ctx context.Context, args *struct {
 		book.AuthorID = *args.AuthorID
 	}
 
-	book, err := ctx.Value("bookService").(*service.BookService).CreateBook(book)
+	book, err := bookService.CreateBook(book)
 	if err != nil {
-		ctx.Value("log").(*logging.Logger).Errorf("Graphql error : %v", err)
+		logger.Errorf("Graphql error : %v", err)
 		return nil, err
 	}
-	ctx.Value("log").(*logging.Logger).Debugf("Created book : %v", book)
+	logger.Debugf("Created book : %v", book)
 	return &BookResolver{&book}, nil
 }

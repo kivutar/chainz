@@ -1,7 +1,6 @@
 package resolver
 
 import (
-	"log"
 	"testing"
 
 	"github.com/graph-gophers/graphql-go"
@@ -18,31 +17,58 @@ var (
 	ctx           context.Context
 )
 
-func TestBookQuery(t *testing.T) {
-	config := gcontext.LoadConfig()
+var book = model.Book{
+	Title:    "Voyage au bout de la nuit",
+	NumPages: 623,
+	PubYear:  1930,
+	AuthorID: "1234",
+}
 
-	db, err := gcontext.OpenDB(config)
-	if err != nil {
-		log.Fatalf("Unable to connect to db: %s \n", err)
+var author = model.Author{
+	Name: "Celine",
+}
+
+type BookServerMock struct{}
+
+func (bsm BookServerMock) CreateBook(book model.Book) (model.Book, error) {
+	return book, nil
+}
+
+func (bsm BookServerMock) FindByTitle(title string) (model.Book, error) {
+	return book, nil
+}
+
+func (bsm BookServerMock) List() ([]model.Book, error) {
+	return []model.Book{book}, nil
+}
+
+type AuthorServerMock struct{}
+
+func (asm AuthorServerMock) CreateAuthor(book model.Author) (model.Author, error) {
+	return author, nil
+}
+
+func (asm AuthorServerMock) FindByID(ID string) (model.Author, error) {
+	return author, nil
+}
+
+func (asm AuthorServerMock) FindByBookID(bookID string) (string, error) {
+	return author.ID, nil
+}
+
+func TestBookQuery(t *testing.T) {
+	logger := service.NewLogger(gcontext.LoadConfig())
+
+	services := &service.Container{
+		BookServer:   BookServerMock{},
+		AuthorServer: AuthorServerMock{},
 	}
-	defer db.Close()
 
 	ctx := context.Background()
-	log := service.NewLogger(config)
-	authorService := service.NewAuthorService(db, log)
-	bookService := service.NewBookService(db, authorService, log)
-
-	ctx = context.WithValue(ctx, "log", log)
-	ctx = context.WithValue(ctx, "bookService", bookService)
+	ctx = context.WithValue(ctx, "logger", logger)
+	ctx = context.WithValue(ctx, "services", services)
 
 	graphqlSchema := graphql.MustParseSchema(schema.GetRootSchema(), &Resolver{})
-
-	bookService.CreateBook(model.Book{
-		Title:    "Voyage au bout de la nuit",
-		NumPages: 623,
-		PubYear:  1930,
-		AuthorID: "1234",
-	})
 
 	gqltesting.RunTests(t, []*gqltesting.Test{
 		{
@@ -53,6 +79,9 @@ func TestBookQuery(t *testing.T) {
 					book(title: "Voyage au bout de la nuit") {
 						numPages
 						pubYear
+						author {
+							name
+						}
 					}
 				}
 			`,
@@ -60,7 +89,10 @@ func TestBookQuery(t *testing.T) {
 				{
 					"book": {
 						"numPages": 623,
-						"pubYear": 1930
+						"pubYear": 1930,
+						"author": {
+							"name": "Celine"
+						}
 					}
 				}
 			`,
@@ -72,6 +104,9 @@ func TestBookQuery(t *testing.T) {
 				{
 					books {
 						title
+						author {
+							name
+						}
 					}
 				}
 			`,
@@ -79,7 +114,10 @@ func TestBookQuery(t *testing.T) {
 				{
 					"books": [
 						{
-							"title": "Voyage au bout de la nuit"
+							"title": "Voyage au bout de la nuit",
+							"author": {
+								"name": "Celine"
+							}
 						}
 					]
 				}

@@ -29,9 +29,12 @@ func (r *BookResolver) PubYear() *int32 {
 }
 
 func (r *BookResolver) Author(ctx context.Context) (*AuthorResolver, error) {
-	author, err := ctx.Value("authorService").(*service.AuthorService).FindByID(r.book.AuthorID)
+	authorService := ctx.Value("services").(*service.Container).AuthorServer
+	logger := ctx.Value("logger").(*logging.Logger)
+
+	author, err := authorService.FindByID(r.book.AuthorID)
 	if err != nil {
-		ctx.Value("log").(*logging.Logger).Errorf("Graphql error : %v", err)
+		logger.Errorf("Graphql error : %v", err)
 		return nil, err
 	}
 
