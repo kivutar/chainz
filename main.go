@@ -45,7 +45,7 @@ func main() {
 
 	mux := http.NewServeMux()
 
-	mux.HandleFunc("/query", h.AddContext(ctx, &h.GraphQL{Schema: graphqlSchema}))
+	mux.Handle("/query", &h.GraphQL{Schema: graphqlSchema})
 
 	mux.HandleFunc("/callback", h.CallbackHandler)
 
@@ -57,5 +57,5 @@ func main() {
 		http.ServeFile(w, r, "graphiql.html")
 	})
 
-	log.Fatal(http.ListenAndServe(":"+config.Port, handlers.LoggingHandler(os.Stdout, mux)))
+	log.Fatal(http.ListenAndServe(":"+config.Port, h.AddContext(ctx, handlers.LoggingHandler(os.Stdout, mux))))
 }
