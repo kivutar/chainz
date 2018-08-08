@@ -6,7 +6,6 @@ import (
 	"os"
 
 	"github.com/gorilla/handlers"
-	"github.com/gorilla/mux"
 	gcontext "github.com/kivutar/chainz/context"
 	h "github.com/kivutar/chainz/handler"
 	"github.com/kivutar/chainz/resolver"
@@ -44,19 +43,19 @@ func main() {
 
 	graphqlSchema := graphql.MustParseSchema(schema.GetRootSchema(), &resolver.Resolver{})
 
-	r := mux.NewRouter()
+	mux := http.NewServeMux()
 
-	r.HandleFunc("/query", h.AddContext(ctx, &h.GraphQL{Schema: graphqlSchema}))
+	mux.HandleFunc("/query", h.AddContext(ctx, &h.GraphQL{Schema: graphqlSchema}))
 
-	r.HandleFunc("/callback", h.CallbackHandler)
+	mux.HandleFunc("/callback", h.CallbackHandler)
 
-	r.HandleFunc("/login", h.LoginHandler)
+	mux.HandleFunc("/login", h.LoginHandler)
 
-	r.HandleFunc("/user", h.UserHandler)
+	mux.HandleFunc("/user", h.UserHandler)
 
-	r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "graphiql.html")
 	})
 
-	log.Fatal(http.ListenAndServe(":"+config.Port, handlers.LoggingHandler(os.Stdout, r)))
+	log.Fatal(http.ListenAndServe(":"+config.Port, handlers.LoggingHandler(os.Stdout, mux)))
 }
