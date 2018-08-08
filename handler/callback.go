@@ -17,9 +17,9 @@ func CallbackHandler(w http.ResponseWriter, r *http.Request) {
 	domain := os.Getenv("AUTH0_DOMAIN")
 
 	conf := &oauth2.Config{
-		ClientID:     os.Getenv("AUTH0_ID"),
-		ClientSecret: os.Getenv("AUTH0_SECRET"),
-		RedirectURL:  os.Getenv("http://localhost:3000/callback"),
+		ClientID:     os.Getenv("AUTH0_CLIENT_ID"),
+		ClientSecret: os.Getenv("AUTH0_CLIENT_SECRET"),
+		RedirectURL:  os.Getenv("AUTH0_CALLBACK_URL"),
 		Scopes:       []string{"openid", "profile"},
 		Endpoint: oauth2.Endpoint{
 			AuthURL:  "https://" + domain + "/authorize",
